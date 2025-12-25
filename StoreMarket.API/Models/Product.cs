@@ -1,10 +1,9 @@
-﻿using ConsoleStoreEngine.Products;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
-
-namespace ConsoleStoreEngine.Products
+namespace StoreMarket.API.Models
 {
     [JsonDerivedType(typeof(Food), typeDiscriminator: "food")]
     [JsonDerivedType(typeof(Electronics), typeDiscriminator: "electronics")]
@@ -47,46 +46,47 @@ namespace ConsoleStoreEngine.Products
 
 
     }
-}
-class Food : Product
-{
-    public DateTime ExpiryDate { get; private set; }
-    public Food(string name, decimal price, int quantity, DateTime expiryDate) : base(name, price, quantity)
+    public class Food : Product
     {
-        this.ExpiryDate = expiryDate;
+        public DateTime ExpiryDate { get; private set; }
+        public Food(string name, decimal price, int quantity, DateTime expiryDate) : base(name, price, quantity)
+        {
+            this.ExpiryDate = expiryDate;
+        }
+        public override string ToString()
+        {
+            return base.ToString() + $" | Expiry Date: {ExpiryDate}";
+        }
     }
-    public override string ToString()
+    public class Electronics : Product
     {
-        return base.ToString() + $" | Expiry Date: {ExpiryDate}";
+        public DateTime ManufactureDate { get; private set; }
+
+        public Electronics(string name, decimal price, int quantity, DateTime manufactureDate) : base(name, price, quantity)
+        {
+            ManufactureDate = manufactureDate;
+        }
+
+        public override string ToString()
+        {
+
+            return base.ToString() + $" | Manufacture Date: {ManufactureDate}";
+        }
     }
-}
-class Electronics : Product
-{
-    public DateTime ManufactureDate { get; private set; }
-
-    public Electronics(string name, decimal price, int quantity, DateTime manufactureDate) : base(name, price, quantity)
+    public class Clothing : Product
     {
-        ManufactureDate = manufactureDate;
-    }
+        public string Size { get; private set; }
 
-    public override string ToString()
-    {
+        public Clothing(string name, decimal price, int quantity, string size) : base(name, price, quantity)
+        {
+            Size = size;
+        }
+        public override string ToString()
+        {
 
-        return base.ToString() + $" | Manufacture Date: {ManufactureDate}";
-    }
-}
-class Clothing : Product
-{
-    public string Size { get; private set; }
+            return base.ToString() + $" | Size: {Size}";
+        }
 
-    public Clothing(string name, decimal price, int quantity, string size) : base(name, price, quantity)
-    {
-        Size = size;
-    }
-    public override string ToString()
-    {
-
-        return base.ToString() + $" | Size: {Size}";
     }
 
 }
